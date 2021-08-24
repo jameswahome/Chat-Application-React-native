@@ -1,0 +1,53 @@
+{
+  "userList": [
+    {
+      "id": 1,
+      "name": "Jay",
+      "lastMessage": "Hello world",
+      "profilePic": "",
+      "lastSeen": "10:36pm"
+    },
+    {
+      "id": 2,
+      "name": "Jane",
+      "lastMessage": "Last reply...",
+      "profilePic": "",
+      "lastSeen": "11:36pm"
+    },
+    {
+      "id": 3,
+      "name": "Doe",
+      "lastMessage": "Good Morning",
+      "profilePic": "",
+      "lastSeen": "12:36pm"
+    },
+    {
+      "id": 4,
+      "name": "John",
+      "lastMessage": "Good Afternoon",
+      "profilePic": "",
+      "lastSeen": "2:36pm"
+    },
+    {
+      "id": 5,
+      "name": "Dean",
+      "lastMessage": "It's been A minute",
+      "profilePic": "",
+      "lastSeen": "3:36pm"
+    },
+    {
+      "id": 6,
+      "name": "Alex",
+      "lastMessage": "Long time no see",
+      "profilePic": "",
+      "lastSeen": "5:36pm"
+    },
+    {
+      "id": 7,
+      "name": "Ken",
+      "lastMessage": "Unachoma",
+      "profilePic": "",
+      "lastSeen": "8:36pm"
+    }
+  ]
+}
