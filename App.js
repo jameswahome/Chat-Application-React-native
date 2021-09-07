@@ -7,11 +7,11 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 
 const httpLink = new HttpLink({
-  uri: "http://192.168.1.35:8080/api",
+  uri: "https://789b-105-160-37-97.ngrok.io/api",
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://192.168.1.35/subscriptions",
+  uri: "wss://789b-105-160-37-97.ngrok.io/subscriptions",
   options: {
     reconnect: true,
   },
