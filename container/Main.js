@@ -9,10 +9,10 @@ import HomeScreen from "../screens/homescreen/HomeScreen";
 import { Feather as Icon } from "@expo/vector-icons";
 import Chats from "../screens/Chats/Chats";
 import Status from "../screens/Status/Status";
-import Calls from "../screens/Calls/Calls";
 import { LIGHT_COLOR, PRIMARY_COLOR, PRIMARY_DARK } from "../constants/colors";
 import { UserContext } from "../context/UserContext";
 import { AuthContext } from "../context/AuthContext";
+import Settings from "../screens/Settings/Settings";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -33,7 +33,7 @@ const MaterialTopTab = () => {
     >
       <Tab.Screen name="Chats" component={Chats} />
       <Tab.Screen name="Status" component={Status} />
-      <Tab.Screen name="Calls" component={Calls} />
+      <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
 };

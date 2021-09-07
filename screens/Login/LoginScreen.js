@@ -81,7 +81,7 @@ const Login = ({ navigation }) => {
       <ErrorNotification errorNot={errorNot} />
       <InputText
         style={styles.input}
-        placeholder="Email"
+        placeholder="username or Email"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}

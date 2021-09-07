@@ -13,6 +13,7 @@ export function useAuth() {
         case "SET_USER":
           return {
             ...state,
+            loading: false,
             user: { ...action.payload },
           };
         case "REMOVE_USER":
@@ -23,7 +24,7 @@ export function useAuth() {
         case "SET_LOADING":
           return {
             ...state,
-            user: action.payload,
+            loading: action.payload,
           };
         default:
           return state;
@@ -62,12 +63,14 @@ export function useAuth() {
     []
   );
   useEffect(() => {
-    AsyncStorage.getItem(key).then((user) => {
-      if (user) {
-        dispatch(createAction("SET_USER", JSON.parse(user)));
-      }
+    sleep(2000).then(() => {
+      AsyncStorage.getItem(key).then((user) => {
+        if (user) {
+          dispatch(createAction("SET_USER", JSON.parse(user)));
+        }
 
-      //   dispatch(createAction("SET_LOADING", false));
+        dispatch(createAction("SET_LOADING", false));
+      });
     });
   }, []);
   return { auth, state };
