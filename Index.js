@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect, useReducer } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Main from "./container/Main";
 import { NavigationContainer } from "@react-navigation/native";
@@ -7,30 +7,33 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AuthStackNavigator from "./navigators/AuthStackNavigator";
 import { lightTheme } from "./themes/light";
 import { AuthContext } from "./context/AuthContext";
+import { UserContext } from "./context/UserContext";
+import { useAuth } from "./hooks/useAuth";
 
 const RootStack = createStackNavigator();
 
 export default function RootApp() {
-  const auth = useMemo(() => ({
-    login: async (email, password) => {
-      console.log(`the email is ${email} and password ${password}`);
-    },
-    logout: async () => {
-      console.log("loggedout");
-    },
-    signUp: async (email, password) => {
-      console.log(`the email is ${email} and password ${password}`);
-    },
-  }));
+  const { auth, state } = useAuth();
+
   return (
     <AuthContext.Provider value={auth}>
-      <NavigationContainer theme={lightTheme}>
+      <NavigationContainer theme={lightTheme} independent={true}>
         <RootStack.Navigator
           screenOptions={{
             headerShown: false,
           }}
         >
-          <RootStack.Screen name="AuthStack" component={AuthStackNavigator} />
+          {state.user ? (
+            <RootStack.Screen name="MainStack">
+              {() => (
+                <UserContext.Provider value={state.user}>
+                  <Main />
+                </UserContext.Provider>
+              )}
+            </RootStack.Screen>
+          ) : (
+            <RootStack.Screen name="AuthStack" component={AuthStackNavigator} />
+          )}
         </RootStack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>

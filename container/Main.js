@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 
-import React from "react";
+import React, { useContext } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -11,12 +11,16 @@ import Chats from "../screens/Chats/Chats";
 import Status from "../screens/Status/Status";
 import Calls from "../screens/Calls/Calls";
 import { LIGHT_COLOR, PRIMARY_COLOR, PRIMARY_DARK } from "../constants/colors";
+import { UserContext } from "../context/UserContext";
+import { AuthContext } from "../context/AuthContext";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
 //navigator components for chats, status, calls
 const MaterialTopTab = () => {
+  const userDetails = useContext(UserContext);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -34,10 +38,11 @@ const MaterialTopTab = () => {
   );
 };
 const Main = () => {
+  const { logout } = React.useContext(AuthContext);
   return (
     <View style={{ flex: 1 }}>
       <StatusBar backgroundColor={PRIMARY_COLOR} style="light" />
-      <NavigationContainer>
+      <NavigationContainer independent={true}>
         <Stack.Navigator>
           <Stack.Screen
             options={({ navigation, route }) => ({
@@ -66,7 +71,10 @@ const Main = () => {
                       <Icon name="search" size={26} color={LIGHT_COLOR} />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => console.log("menu Tab")}
+                      onPress={() => {
+                        console.log("menu Tab");
+                        logout();
+                      }}
                       style={{ marginHorizontal: 5 }}
                     >
                       <Icon
