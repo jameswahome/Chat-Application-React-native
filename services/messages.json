@@ -1,0 +1,53 @@
+{
+  "messageList": [
+    {
+      "id": 1,
+      "name": "Jay",
+      "lastMessage": "Hi Dr.Hendrikson, I haven't been feeling well for past few days.",
+      "profilePic": "",
+      "Time": "10:36pm"
+    },
+    {
+      "id": 2,
+      "name": "Jane",
+      "lastMessage": "Hi Dr.Hendrikson, I haven't been feeling well for past few days.",
+      "profilePic": "",
+      "Time": "11:36pm"
+    },
+    {
+      "id": 3,
+      "name": "Doe",
+      "lastMessage": "Hi Dr.Hendrikson, I haven't been feeling well for past few days.",
+      "profilePic": "",
+      "Time": "12:36pm"
+    },
+    {
+      "id": 4,
+      "name": "John",
+      "lastMessage": "Hi Dr.Hendrikson, I haven't been feeling well for past few days.",
+      "profilePic": "",
+      "Time": "2:36pm"
+    },
+    {
+      "id": 5,
+      "name": "Dean",
+      "lastMessage": "It's been A minute",
+      "profilePic": "",
+      "Time": "3:36pm"
+    },
+    {
+      "id": 6,
+      "name": "Alex",
+      "lastMessage": "Long time no see",
+      "profilePic": "",
+      "Time": "5:36pm"
+    },
+    {
+      "id": 7,
+      "name": "Ken",
+      "lastMessage": "Unachoma",
+      "profilePic": "",
+      "Time": "8:36pm"
+    }
+  ]
+}

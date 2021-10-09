@@ -9,7 +9,7 @@ const { width: wWidth, height: wHeight } = Dimensions.get("window");
 
 const Settings = () => {
   const userDetails = useContext(UserContext);
-  console.log(userDetails);
+
   return (
     <View style={styles.root}>
       <ProfileCard

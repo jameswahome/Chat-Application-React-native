@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Image, ScrollView } from "react-native";
 import ButtonTouch from "../../components/Button";
 import ErrorNotification from "../../components/Error";
 import HeadingLogin from "../../components/Heading";
@@ -123,8 +123,6 @@ const SignUp = ({ navigation }) => {
 
   return (
     <View style={styles.root}>
-      <HeadingLogin style={styles.title}>SignUp Screen</HeadingLogin>
-
       <Icon
         style={styles.closeIcon}
         name="close"
@@ -134,58 +132,70 @@ const SignUp = ({ navigation }) => {
           navigation.navigate("Login");
         }}
       />
-      <ErrorNotification errorNot={errorNot} />
-      <TextMessages style={styles.text}> Email </TextMessages>
-      <InputText
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextMessages style={styles.text}>Username </TextMessages>
-      <InputText
-        style={styles.input}
-        placeholder="username"
-        keyboardType="default"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextMessages style={styles.text}>Phone Number </TextMessages>
+      <ScrollView style={styles.scroll}>
+        <View style={styles.imagewrapper}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: "https://res.cloudinary.com/jaymojay/image/upload/v1632481236/Profile-Avatar-PNG_ofcgny.png",
+            }}
+          />
+        </View>
+        <HeadingLogin style={styles.title}>SignUp Screen</HeadingLogin>
 
-      <PhoneInput
-        initialCountry={"ke"}
-        style={{
-          backgroundColor: "#e8e8e8",
-          width: "100%",
-          padding: 15,
-          borderRadius: 8,
-          marginVertical: 8,
-        }}
-        onChangePhoneNumber={setPhoneNumber}
-      />
-      <TextMessages style={styles.text}>Password </TextMessages>
-      <InputText
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <ButtonTouch
-        title="SignUp"
-        style={styles.loginButton}
-        onPress={() => {
-          signupHandler();
-        }}
-      />
-      <ButtonText
-        title="Login"
-        onPress={() => {
-          navigation.pop();
-        }}
-      />
-      <Loading loading={isLoading} />
+        <ErrorNotification errorNot={errorNot} />
+        <TextMessages style={styles.text}> Email </TextMessages>
+        <InputText
+          style={styles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextMessages style={styles.text}>Username </TextMessages>
+        <InputText
+          style={styles.input}
+          placeholder="username"
+          keyboardType="default"
+          value={username}
+          onChangeText={setUsername}
+        />
+        <TextMessages style={styles.text}>Phone Number </TextMessages>
+
+        <PhoneInput
+          initialCountry={"ke"}
+          style={{
+            backgroundColor: "#e8e8e8",
+            width: "100%",
+            padding: 15,
+            borderRadius: 8,
+            marginVertical: 8,
+          }}
+          onChangePhoneNumber={setPhoneNumber}
+        />
+        <TextMessages style={styles.text}>Password </TextMessages>
+        <InputText
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        <ButtonTouch
+          title="SignUp"
+          style={styles.loginButton}
+          onPress={() => {
+            signupHandler();
+          }}
+        />
+        <ButtonText
+          title="Login"
+          onPress={() => {
+            navigation.pop();
+          }}
+        />
+        <Loading loading={isLoading} />
+      </ScrollView>
     </View>
   );
 };
@@ -197,6 +207,11 @@ const styles = StyleSheet.create({
     paddingTop: 100,
     padding: 16,
   },
+  scroll: {
+    flex: 1,
+    width: "100%",
+    padding: 16,
+  },
   input: {
     marginVertical: 4,
   },
@@ -205,16 +220,25 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 10,
+    textAlign: "center",
   },
   closeIcon: {
     position: "absolute",
-    top: 60,
+    top: 80,
     right: 16,
   },
   text: {
     textAlign: "left",
     width: "100%",
     padding: 8,
+  },
+  image: {
+    height: 60,
+    width: 60,
+  },
+  imagewrapper: {
+    paddingLeft: 130,
+    marginBottom: 10,
   },
 });
 export default SignUp;

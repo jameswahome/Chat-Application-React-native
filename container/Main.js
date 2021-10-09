@@ -13,6 +13,7 @@ import { LIGHT_COLOR, PRIMARY_COLOR, PRIMARY_DARK } from "../constants/colors";
 import { UserContext } from "../context/UserContext";
 import { AuthContext } from "../context/AuthContext";
 import Settings from "../screens/Settings/Settings";
+import Conversation from "../screens/conversations/Conversations";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -90,6 +91,15 @@ const Main = () => {
             name="home"
             component={MaterialTopTab}
           />
+
+          <Stack.Screen
+            name="Conversation"
+            component={Conversation}
+            options={{
+              title: "Awesome app",
+            }}
+          />
+          <Stack.Screen name="Settings" component={Settings} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

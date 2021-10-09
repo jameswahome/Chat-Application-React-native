@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 import ButtonTouch from "../../components/Button";
 import ErrorNotification from "../../components/Error";
 import HeadingLogin from "../../components/Heading";
@@ -41,7 +41,7 @@ const Login = ({ navigation }) => {
       },
     };
 
-    fetch("https://9837-105-160-37-97.ngrok.io/api", {
+    fetch("https://7a65-105-160-73-57.ngrok.io/api", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -77,6 +77,12 @@ const Login = ({ navigation }) => {
   };
   return (
     <View style={styles.root}>
+      <Image
+        style={styles.image}
+        source={{
+          uri: "https://res.cloudinary.com/jaymojay/image/upload/v1632481236/Profile-Avatar-PNG_ofcgny.png",
+        }}
+      />
       <HeadingLogin style={styles.title}>Login Screen</HeadingLogin>
       <ErrorNotification errorNot={errorNot} />
       <InputText
@@ -126,6 +132,10 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 48,
+  },
+  image: {
+    height: 60,
+    width: 60,
   },
 });
 export default Login;

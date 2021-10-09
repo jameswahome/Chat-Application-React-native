@@ -10,13 +10,19 @@ import {
 import { userList } from "../../services/data.json";
 import { Feather as Icon } from "@expo/vector-icons";
 import { LIGHT_COLOR, SECONDARY_BLUE } from "../../constants/colors";
+
 const { width: wWidth, height: wHeight } = Dimensions.get("window");
 
-const Chats = () => {
+const Chats = ({ navigation }) => {
   //render the chat screen recent conversations
   const renderItem = (item) => {
     return (
-      <View style={styles.cardContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("Conversation");
+        }}
+        style={[styles.cardContainer]}
+      >
         <View style={styles.avatarContiner}>
           <View style={styles.avatarBox}></View>
           <View style={{ paddingHorizontal: 10 }}>
@@ -28,7 +34,7 @@ const Chats = () => {
         <View>
           <Text style={styles.silentText}>{item.item.lastSeen}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (
@@ -81,6 +87,11 @@ const styles = StyleSheet.create({
     height: 70,
     backgroundColor: SECONDARY_BLUE,
     borderRadius: 100,
+  },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
   },
 });
 export default Chats;
