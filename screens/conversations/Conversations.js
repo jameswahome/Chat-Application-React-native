@@ -6,6 +6,10 @@ import {
   Dimensions,
   TextInput,
   FlatList,
+  SafeAreaView,
+  TouchableOpacity,
+  Keyboard,
+  KeyboardEvent,
 } from "react-native";
 import {
   LIGHT_COLOR,
@@ -17,12 +21,15 @@ import { Feather as Icon, Entypo, MaterialIcons } from "@expo/vector-icons";
 import ProfileCard from "../../components/ProfileCard";
 import { Avatar, Divider, TouchableRipple } from "react-native-paper";
 import { messageList } from "../../services/messages.json";
+import { useKeyboard } from "../../components/UseKeyboard";
 
 const { width: wWidth, height: wHeight } = Dimensions.get("window");
 
 const Conversation = (props) => {
   const [inputMessage, setInputMessage] = useState("");
   const { item } = props;
+  const keyboardHeight = useKeyboard();
+  console.log(keyboardHeight);
 
   const messageLayout = (message) => (
     <View>
@@ -38,39 +45,47 @@ const Conversation = (props) => {
     </View>
   );
   return (
-    <View style={styles.root}>
-      <FlatList
-        data={messageList}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={messageLayout}
-      />
-      <View style={styles.textInputMeso}>
-        <View style={styles.inputLayout}>
-          <View>
-            <MaterialIcons name="attach-file" size={24} color="black" />
+    <SafeAreaView style={styles.root}>
+      <TouchableOpacity onPress={Keyboard.dismiss} style={styles.root}>
+        <FlatList
+          data={messageList}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={messageLayout}
+        />
+
+        <View style={styles.textInputMeso}>
+          <View style={styles.inputLayout}>
+            <View>
+              <MaterialIcons name="attach-file" size={24} color="black" />
+            </View>
+
+            <View style={styles.inputWrapper}>
+              <TextInput value={inputMessage} onChangeText={setInputMessage} />
+            </View>
+            <View>
+              <Icon name="camera" size={24} color="black" />
+            </View>
           </View>
-          <View style={styles.inputWrapper}>
-            <TextInput value={inputMessage} onChangeText={setInputMessage} />
-          </View>
-          <View>
-            <Icon name="camera" size={24} color="black" />
+          <View style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 10 }}>
+            {inputMessage === "" ? (
+              <Icon name="mic" size={24} color="black" />
+            ) : (
+              <MaterialIcons name="send" size={24} color="black" />
+            )}
           </View>
         </View>
-        <View style={{ backgroundColor: PRIMARY_COLOR, borderRadius: 10 }}>
-          {inputMessage === "" ? (
-            <Icon name="mic" size={24} color="black" />
-          ) : (
-            <MaterialIcons name="send" size={24} color="black" />
-          )}
-        </View>
-      </View>
-    </View>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: LIGHT_COLOR,
+  },
+  inner: {
+    flex: 1,
+    justifyContent: "space-around",
   },
   messagesLeft: {
     borderRadius: 10,
@@ -109,6 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    flex: 2,
   },
   inputWrapper: {
     backgroundColor: PRIMARY_COLOR,

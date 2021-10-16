@@ -41,7 +41,7 @@ const Login = ({ navigation }) => {
       },
     };
 
-    fetch("https://7a65-105-160-73-57.ngrok.io/api", {
+    fetch("https://25a6-105-160-73-57.ngrok.io/api", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
