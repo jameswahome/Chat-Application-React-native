@@ -6,7 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import HomeScreen from "../screens/homescreen/HomeScreen";
-import { Feather as Icon } from "@expo/vector-icons";
+import { Feather as Icon, AntDesign } from "@expo/vector-icons";
 import Chats from "../screens/Chats/Chats";
 import Status from "../screens/Status/Status";
 import { LIGHT_COLOR, PRIMARY_COLOR, PRIMARY_DARK } from "../constants/colors";
@@ -14,6 +14,7 @@ import { UserContext } from "../context/UserContext";
 import { AuthContext } from "../context/AuthContext";
 import Settings from "../screens/Settings/Settings";
 import Conversation from "../screens/conversations/Conversations";
+import Contacts from "../screens/Contacts/Contacts";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -33,7 +34,7 @@ const MaterialTopTab = () => {
       }}
     >
       <Tab.Screen name="Chats" component={Chats} />
-      <Tab.Screen name="Status" component={Status} />
+      {/* <Tab.Screen name="Status" component={Status} /> */}
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
@@ -78,11 +79,7 @@ const Main = () => {
                       }}
                       style={{ marginHorizontal: 5 }}
                     >
-                      <Icon
-                        name="more-vertical"
-                        size={26}
-                        color={LIGHT_COLOR}
-                      />
+                      <AntDesign name="logout" size={26} color={LIGHT_COLOR} />
                     </TouchableOpacity>
                   </View>
                 );
@@ -95,10 +92,11 @@ const Main = () => {
           <Stack.Screen
             name="Conversation"
             component={Conversation}
-            options={{
-              title: "Awesome app",
-            }}
+            options={({ route }) => ({
+              title: route.params.name,
+            })}
           />
+          <Stack.Screen name="Contacts" component={Contacts} />
           <Stack.Screen name="Settings" component={Settings} />
         </Stack.Navigator>
       </NavigationContainer>

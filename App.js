@@ -7,11 +7,11 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 
 const httpLink = new HttpLink({
-  uri: "https://789b-105-160-37-97.ngrok.io/api",
+  uri: "https://apimarketpalace.com/api",
 });
 
 const wsLink = new WebSocketLink({
-  uri: "wss://789b-105-160-37-97.ngrok.io/subscriptions",
+  uri: "wss://apimarketpalace.com/subscriptions",
   options: {
     reconnect: true,
   },
@@ -36,7 +36,13 @@ const splitLink = split(
 
 const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      usersMessageList: {
+        keyFields: ["_id", "receiver", "user", ["username"]],
+      },
+    },
+  }),
 });
 
 const App = () => (

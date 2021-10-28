@@ -83,7 +83,7 @@ const SignUp = ({ navigation }) => {
       },
     };
 
-    fetch("https://9837-105-160-37-97.ngrok.io/api", {
+    fetch("https://apimarketpalace.com/api", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

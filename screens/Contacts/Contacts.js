@@ -21,117 +21,123 @@ import moment from "moment";
 
 const { width: wWidth, height: wHeight } = Dimensions.get("window");
 
-const Chats = ({ navigation }) => {
+const Contacts = ({ navigation }) => {
   const contextType = useContext(UserContext);
   //render the chat screen recent conversations
-  const allMessages = gql`
+  const users = gql`
     query {
-      usersMessageList {
+      allusers {
         _id
-        messageslists {
-          body
-        }
-        user {
-          username
-          profileimage
-        }
-        receiver {
-          username
-          profileimage
-          _id
-        }
-        createdAt
+        username
+        phonenumber
+        email
+        profileimage
         updatedAt
       }
     }
   `;
 
   const usersprofile = gql`
-    query {
-      oneuser(username: "${contextType.username}") {
-        _id
-        profileimage
-      }
-    }
-  `;
-  const MessageSubscription = gql`
-    subscription {
-      newmessageList {
-        user {
-          username
-          _id
-        }
-        receiver {
-          username
-          _id
-        }
-        messageslists {
-          body
-          user {
-            username
-            profileimage
-          }
-          creator {
-            username
-            profileimage
-          }
-        }
-      }
-    }
-  `;
+query{
+  oneuser(username: "${contextType.username}"){
+    _id
+    profileimage
+  }
+}
+`;
 
   function FetchUsersProfile() {
     const { loading, error, data } = useQuery(usersprofile);
     if (loading) return <Loading />;
-    if (error) return <Text> Error! {error} </Text>;
+    if (error) return <Text>Error! ${error} </Text>;
 
     return data.oneuser;
   }
 
   const user = FetchUsersProfile();
 
-  const { loading, error, data, subscribeToMore } = useQuery(allMessages);
+  const { loading, error, data } = useQuery(users);
   if (loading) return <Loading />;
-  if (error) return <Text> Error! {error} </Text>;
+  if (error) return <Text>Error! ${error} </Text>;
 
-  const myMessages = data.usersMessageList;
-  const subscribeToNewTopics = () => {
-    subscribeToMore({
-      document: MessageSubscription,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const newFeedItem = subscriptionData.data.newmessageList;
+  const Allusers = data.allusers;
+  const allContactList = Allusers.reduce(function (result, element) {
+    if (element.username !== contextType.username) {
+      result.push(element);
+    }
+    return result;
+  }, []);
 
-        return Object.assign({}, prev, {
-          usersMessageList: {
-            usersMessageList: [newFeedItem, prev.usersMessageList],
-          },
-        });
+  const confirmHandler = (inputUsername, inputId) => {
+    console.log(inputId);
+    //check if they're  fields which are null
+    if (inputUsername.trim().length === 0) {
+      throw new Error("all fields are required");
+    }
+
+    //post to the database
+    const requestBody = {
+      query: `
+          mutation CreateEvent(  $username: ID! ) {
+             CreateMessageList(receiver:$username){
+                
+                receiver{
+                  _id
+                  username
+                  email
+                }
+                
+                updatedAt
+                createdAt
+                _id
+              }
+            }
+        `,
+      variables: {
+        username: inputUsername,
       },
-    });
+    };
+
+    fetch("https://apimarketpalace.com/api", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        if (resData.data !== null) {
+          console.log(resData.data.CreateMessageList.receiver._id);
+          navigation.navigate("Conversation", {
+            setTapUser: resData.data.CreateMessageList.receiver._id,
+            name: resData.data.CreateMessageList.receiver.username,
+          });
+        } else {
+          navigation.navigate("Conversation", {
+            setTapUser: inputUsername,
+            name: inputId,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
-  subscribeToNewTopics();
-
-  const sortedMessages = myMessages.slice().sort((a, b) => {
-    const dateA = new Date(b.updatedAt);
-    const DateB = new Date(a.updatedAt);
-
-    return dateA - DateB;
-  });
-
-  const contactListLength = sortedMessages.length;
-
   const renderItem = (item) => {
-    const lastMessage = item.item.messageslists.length - 1;
-    const usersprofile = item.item.receiver.profileimage;
+    const usersprofile = item.item.profileimage;
 
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("Conversation", {
-            setTapUser: item.item.receiver._id,
-            name: item.item.receiver.username,
-          });
+          confirmHandler(item.item._id, item.item.username);
         }}
         style={[styles.cardContainer]}
       >
@@ -154,17 +160,11 @@ const Chats = ({ navigation }) => {
             )}
           </View>
           <View style={{ paddingHorizontal: 10 }}>
-            <Text>{item.item.receiver.username}</Text>
+            <Text>{item.item.username}</Text>
             <Text style={styles.silentText}>
-              {item.item.messageslists[lastMessage].body}
+              Hey, Im using Chat Application
             </Text>
           </View>
-        </View>
-
-        <View>
-          <Text style={styles.silentText}>
-            {moment(item.item.updatedAt).format("ddd, LT")}
-          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -174,16 +174,13 @@ const Chats = ({ navigation }) => {
       {/* Flatlist is mainly used to render an array of items on screen without affecting the perfomance of the application*/}
 
       <FlatList
-        data={sortedMessages}
+        data={allContactList}
         keyExtractor={(item) => item._id.toString()}
         renderItem={renderItem}
       />
       {/* Floating Icon at the bottom right*/}
       <View>
-        <TouchableOpacity
-          style={styles.floatingIcon}
-          onPress={() => navigation.navigate("Contacts")}
-        >
+        <TouchableOpacity style={styles.floatingIcon}>
           <Icon name="message-square" size={30} color="#ffffff" />
         </TouchableOpacity>
       </View>
@@ -233,4 +230,4 @@ const styles = StyleSheet.create({
     width: 60,
   },
 });
-export default Chats;
+export default Contacts;

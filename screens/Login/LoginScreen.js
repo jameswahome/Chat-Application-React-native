@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, ScrollView } from "react-native";
 import ButtonTouch from "../../components/Button";
 import ErrorNotification from "../../components/Error";
 import HeadingLogin from "../../components/Heading";
@@ -41,7 +41,7 @@ const Login = ({ navigation }) => {
       },
     };
 
-    fetch("https://25a6-105-160-73-57.ngrok.io/api", {
+    fetch("https://apimarketpalace.com/api", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -77,42 +77,46 @@ const Login = ({ navigation }) => {
   };
   return (
     <View style={styles.root}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: "https://res.cloudinary.com/jaymojay/image/upload/v1632481236/Profile-Avatar-PNG_ofcgny.png",
-        }}
-      />
-      <HeadingLogin style={styles.title}>Login Screen</HeadingLogin>
-      <ErrorNotification errorNot={errorNot} />
-      <InputText
-        style={styles.input}
-        placeholder="username or Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <InputText
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <ButtonTouch
-        title="Login"
-        style={styles.loginButton}
-        onPress={() => {
-          loginHandler(email, password);
-        }}
-      />
-      <ButtonText
-        title="Create an Account"
-        onPress={() => {
-          navigation.navigate("SignUp");
-        }}
-      />
-      <Loading loading={isLoading} />
+      <ScrollView style={styles.scroll}>
+        <View style={styles.imagewrapper}>
+          <Image
+            style={styles.image}
+            source={{
+              uri: "https://res.cloudinary.com/jaymojay/image/upload/v1632481236/Profile-Avatar-PNG_ofcgny.png",
+            }}
+          />
+        </View>
+        <HeadingLogin style={styles.title}>Login Screen</HeadingLogin>
+        <ErrorNotification errorNot={errorNot} />
+        <InputText
+          style={styles.input}
+          placeholder="username or Email"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <InputText
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        <ButtonTouch
+          title="Login"
+          style={styles.loginButton}
+          onPress={() => {
+            loginHandler(email, password);
+          }}
+        />
+        <ButtonText
+          title="Create an Account"
+          onPress={() => {
+            navigation.navigate("SignUp");
+          }}
+        />
+        <Loading loading={isLoading} />
+      </ScrollView>
     </View>
   );
 };
@@ -124,6 +128,11 @@ const styles = StyleSheet.create({
     paddingTop: 120,
     padding: 20,
   },
+  scroll: {
+    flex: 1,
+    width: "100%",
+    padding: 16,
+  },
   input: {
     marginVertical: 8,
   },
@@ -132,10 +141,15 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 48,
+    textAlign: "center",
   },
   image: {
     height: 60,
     width: 60,
+  },
+  imagewrapper: {
+    paddingLeft: 130,
+    marginBottom: 10,
   },
 });
 export default Login;
